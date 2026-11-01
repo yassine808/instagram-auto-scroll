@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Instagram Auto-Scroll</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        width: 268px;
+        background: #141416;
+        color: #f2f2f5;
+        font: 13px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+      header {
+        padding: 14px 16px 12px;
+        border-bottom: 1px solid #26262b;
+      }
+      h1 {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+      .head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .ver {
+        font-size: 10px;
+        color: #6f6f78;
+        font-variant-numeric: tabular-nums;
+      }
+      header p {
+        margin: 4px 0 0;
+        font-size: 11px;
+        color: #8e8e96;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 14px 16px;
+      }
+      .label {
+        font-weight: 600;
+      }
+      .hint {
+        margin-top: 3px;
+        font-size: 11px;
+        color: #8e8e96;
+      }
+      .switch {
+        position: relative;
+        flex: 0 0 auto;
+        width: 38px;
+        height: 22px;
+      }
+      .switch input {
+        position: absolute;
+        width: 0;
+        height: 0;
+        opacity: 0;
+      }
+      .track {
+        position: absolute;
+        inset: 0;
+        border-radius: 999px;
+        background: #3a3a41;
+        cursor: pointer;
+        transition: background 0.15s ease;
+      }
+      .track::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #fff;
+        transition: transform 0.15s ease;
+      }
+      .switch input:checked + .track {
+        background: #1c9658;
+      }
+      .switch input:checked + .track::after {
+        transform: translateX(16px);
+      }
+      .switch input:focus-visible + .track {
+        outline: 2px solid #6fb2ff;
+        outline-offset: 2px;
+      }
+      footer {
+        padding: 10px 16px 14px;
+        border-top: 1px solid #26262b;
+      }
+      a {
+        color: #6fb2ff;
+        font-size: 11px;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="head">
+        <h1>Instagram Auto-Scroll</h1>
+        <span class="ver">v1.1.0</span>
+      </div>
+      <p>Saved settings apply on every Reels visit.</p>
+    </header>
+
+    <div class="row">
+      <div>
+        <div class="label">Auto-scroll on Reels</div>
+        <div class="hint">Master switch — same value as the on-page button.</div>
+      </div>
+      <label class="switch">
+        <input id="enabled" type="checkbox" />
+        <span class="track"></span>
+      </label>
+    </div>
+
+    <div class="row">
+      <div>
+        <div class="label">Advance trigger</div>
+        <div class="hint">Moves to the next reel the moment the current one ends.</div>
+      </div>
+    </div>
+
+    <footer>
+      <a id="openReels" href="https://www.instagram.com/reels/" target="_blank" rel="noopener">
+        Open Instagram Reels ↗
+      </a>
+    </footer>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
