@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Instagram Auto-Scroll",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Auto-advances Instagram Reels. Toggle on the page or from the extension settings.",
   "permissions": ["storage"],
   "host_permissions": ["https://www.instagram.com/*"],

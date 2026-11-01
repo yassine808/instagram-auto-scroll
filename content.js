@@ -283,8 +283,9 @@
     return button;
   }
 
-  // Bottom-right of the reel, outside it. Falls back to inside the card's
-  // bottom-right when the window leaves no room, then clamps to the viewport.
+  // Top-right of the reel, outside it — the card's own overlays (back arrow,
+  // search, action column, audio avatar) all live inside, so this stays clear.
+  // Falls back to outside-left, then inside the card, then clamps.
   function positionButton() {
     const el = ensureButton();
     const onPage = isReelsPage();
@@ -301,14 +302,17 @@
     let top = window.innerHeight - height - pad;
 
     if (rect && rect.width > 0) {
-      const outsideLeft = rect.right + gap;
+      const rightOfCard = rect.right + gap;
+      const leftOfCard = rect.left - gap - width;
 
-      if (outsideLeft + width <= window.innerWidth - pad) {
-        left = outsideLeft;
+      if (rightOfCard + width <= window.innerWidth - pad) {
+        left = rightOfCard;
+      } else if (leftOfCard >= pad) {
+        left = leftOfCard;
       } else {
         left = rect.right - width - pad;
       }
-      top = rect.bottom - height - 12;
+      top = rect.top + 12;
     }
 
     left = Math.min(Math.max(left, pad), window.innerWidth - width - pad);

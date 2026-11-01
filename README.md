@@ -23,12 +23,13 @@ persistent settings.
   - `currentTime` jumping backwards (Instagram looped the reel to 0), or
   - the video's `ended` event.
   A 1.5 s cooldown means one advance per reel — never a burst.
-- **Page control** — a fixed-size pill (168 × 34) anchored to the **bottom-right
-  of the reel, outside it**: right edge + 12 px gap, bottom-aligned with the
-  card. If the window leaves no room it falls back to inside the card's
-  bottom-right, then clamps to the viewport. It reads `Auto-scroll ON`, turns
-  `PAUSED` (amber) while it is deliberately holding back, and `OFF` when
-  disabled. Click to toggle.
+- **Page control** — a fixed-size pill (168 × 34) anchored to the **top-right of
+  the reel, outside the card**: right edge + 12 px, top-aligned. Instagram's own
+  overlays (back arrow, search, like/comment column, audio avatar) all sit inside
+  the card, so this spot stays clear. Falls back to outside-left, then inside the
+  card, then clamps to the viewport. It reads `Auto-scroll ON`, turns `PAUSED`
+  (amber) while it is deliberately holding back, and `OFF` when disabled.
+  Click to toggle.
 - **Comments setting** — Instagram splits the reel card when the comment drawer
   opens, narrowing the video. The script remembers each reel's widest width; if
   the video drops below 72 % of it, comments count as open. With
@@ -66,7 +67,7 @@ persistent settings.
 
 ## Test checklist
 
-- [ ] Load unpacked, open `/reels` → pill sits bottom-right of the reel, outside it.
+- [ ] Load unpacked, open `/reels` → pill sits top-right of the reel, outside it.
 - [ ] Pill keeps the same 168 × 34 size in every state (`ON` / `PAUSED` / `OFF`).
 - [ ] Let a reel play to the end → next reel appears immediately.
 - [ ] Looping reel → advances once, at the loop point, not twice.

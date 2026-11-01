@@ -19,10 +19,12 @@ the extension.
   both `DEFAULTS` objects and to the README table.
 - Only touch the DOM while `location.pathname` matches `/reels`. Instagram is a
   SPA, so re-check the path on navigation instead of relying on page loads.
-- The page pill is a **fixed 168 × 34** element placed at the **bottom-right of
-  the reel, outside it** (right edge + 12 px, bottom-aligned), falling back
-  inside the card only when the window is too narrow. Keep the viewport clamp in
+- The page pill is a **fixed 168 × 34** element placed at the **top-right of the
+  reel, outside it** (right edge + 12 px, top-aligned), falling back outside-left
+  then inside the card when the window is too narrow. Keep the viewport clamp in
   `positionButton()`; never let the label change the pill's size.
+- Do not anchor the pill to the card's bottom edge: the action column's audio
+  attribution avatar lives there and the pill covers it.
 - Comments state is detected geometrically (`COMMENT_SHRINK_RATIO`), not by
   Instagram class names.
 - Pick the reel by proximity to the viewport centre — Instagram keeps

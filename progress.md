@@ -7,6 +7,7 @@
 - [x] v1.1.0: end-of-reel trigger (no fixed timer) + button anchored to the reel
 - [x] v1.2.0: popup redesign, pill outside the reel, comments gating toggle
 - [x] v1.2.1: pill moved to the reel's bottom-right, outside it, fixed 168×34
+- [x] v1.2.2: pill moved to the reel's top-right — bottom-right covered the audio avatar
 - [ ] Load unpacked in Brave/Chrome and run the manual test checklist
 - [ ] Fix scroll strategy if Instagram's DOM defeats `findScroller()`
 - [ ] Optional: icons, git init + push to origin
@@ -91,3 +92,14 @@
   bottom anchoring present in `content.js`.
 - Next: reload extension + hard-refresh the tab; confirm the pill sits outside
   the card's bottom-right and does not move when the state changes.
+
+### 2026-11-01 — v1.2.2: pill moved to the reel's top-right
+- Goal: stop the pill covering the audio-attribution avatar at the card's
+  bottom-right.
+- Done: `positionButton()` anchors to `rect.right + 12` / `rect.top + 12`
+  (outside, top-aligned). Fallback order: outside-right → outside-left → inside
+  the card, then viewport clamp. Size stays fixed at 168 × 34.
+- Verified: `node --check` clean, manifest at 1.2.2, README/AGENTS updated to the
+  new anchor and to the reason the bottom edge is off-limits.
+- Next: reload extension + hard-refresh; confirm nothing sits under the pill at
+  the reel's top-right in both normal and comments-open layouts.
