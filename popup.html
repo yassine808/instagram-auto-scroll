@@ -6,60 +6,93 @@
     <style>
       :root {
         color-scheme: dark;
+        --bg: #0f0f11;
+        --card: #16161a;
+        --line: #24242a;
+        --text: #f4f4f6;
+        --muted: #8b8b95;
+        --accent: #34d399;
+      }
+      * {
+        box-sizing: border-box;
       }
       body {
         margin: 0;
-        width: 268px;
-        background: #141416;
-        color: #f2f2f5;
+        width: 292px;
+        background: var(--bg);
+        color: var(--text);
         font: 13px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
       }
       header {
-        padding: 14px 16px 12px;
-        border-bottom: 1px solid #26262b;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 15px 16px;
+        border-bottom: 1px solid var(--line);
+      }
+      .mark {
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        background: linear-gradient(140deg, #f9ce34 0%, #ee2a7b 48%, #6228d7 100%);
+        box-shadow: 0 4px 14px rgba(238, 42, 123, 0.28);
+        flex: 0 0 auto;
+      }
+      .mark svg {
+        width: 16px;
+        height: 16px;
+        display: block;
       }
       h1 {
         margin: 0;
-        font-size: 13px;
+        font-size: 13.5px;
         font-weight: 700;
-        letter-spacing: 0.2px;
+        letter-spacing: 0.1px;
       }
-      .head {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: 8px;
-      }
-      .ver {
-        font-size: 10px;
-        color: #6f6f78;
-        font-variant-numeric: tabular-nums;
-      }
-      header p {
-        margin: 4px 0 0;
+      .sub {
+        margin: 1px 0 0;
         font-size: 11px;
-        color: #8e8e96;
+        color: var(--muted);
       }
-      .row {
+      main {
+        padding: 6px 10px 10px;
+      }
+      .setting {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 14px;
-        padding: 14px 16px;
+        padding: 12px 8px;
+        border-radius: 10px;
+        transition: opacity 0.18s ease;
       }
-      .label {
+      .setting + .setting {
+        margin-top: 2px;
+        border-top: 1px solid var(--line);
+        border-radius: 0;
+        padding-top: 14px;
+      }
+      .setting[data-disabled="true"] {
+        opacity: 0.45;
+      }
+      .title {
+        font-size: 12.5px;
         font-weight: 600;
       }
-      .hint {
+      .desc {
         margin-top: 3px;
         font-size: 11px;
-        color: #8e8e96;
+        line-height: 1.4;
+        color: var(--muted);
       }
       .switch {
         position: relative;
         flex: 0 0 auto;
-        width: 38px;
-        height: 22px;
+        width: 40px;
+        height: 23px;
       }
       .switch input {
         position: absolute;
@@ -71,39 +104,49 @@
         position: absolute;
         inset: 0;
         border-radius: 999px;
-        background: #3a3a41;
+        background: #35353d;
         cursor: pointer;
-        transition: background 0.15s ease;
+        transition: background 0.18s ease;
       }
       .track::after {
         content: "";
         position: absolute;
         top: 3px;
         left: 3px;
-        width: 16px;
-        height: 16px;
+        width: 17px;
+        height: 17px;
         border-radius: 50%;
         background: #fff;
-        transition: transform 0.15s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        transition: transform 0.18s ease;
       }
       .switch input:checked + .track {
-        background: #1c9658;
+        background: var(--accent);
       }
       .switch input:checked + .track::after {
-        transform: translateX(16px);
+        transform: translateX(17px);
       }
       .switch input:focus-visible + .track {
-        outline: 2px solid #6fb2ff;
+        outline: 2px solid #59b0ff;
         outline-offset: 2px;
       }
       footer {
-        padding: 10px 16px 14px;
-        border-top: 1px solid #26262b;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 11px 16px 13px;
+        border-top: 1px solid var(--line);
+      }
+      .hint {
+        font-size: 10.5px;
+        color: var(--muted);
       }
       a {
         color: #6fb2ff;
         font-size: 11px;
         text-decoration: none;
+        white-space: nowrap;
       }
       a:hover {
         text-decoration: underline;
@@ -112,35 +155,45 @@
   </head>
   <body>
     <header>
-      <div class="head">
-        <h1>Instagram Auto-Scroll</h1>
-        <span class="ver">v1.1.0</span>
+      <div class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 4v14" />
+          <path d="M6 13l6 6 6-6" />
+        </svg>
       </div>
-      <p>Saved settings apply on every Reels visit.</p>
+      <div>
+        <h1>Instagram Auto-Scroll</h1>
+        <p class="sub">Advances when a reel ends · v1.2.0</p>
+      </div>
     </header>
 
-    <div class="row">
-      <div>
-        <div class="label">Auto-scroll on Reels</div>
-        <div class="hint">Master switch — same value as the on-page button.</div>
+    <main>
+      <div class="setting">
+        <div>
+          <div class="title">Auto-scroll on Reels</div>
+          <div class="desc">Master switch, same value as the page button.</div>
+        </div>
+        <label class="switch">
+          <input id="enabled" type="checkbox" />
+          <span class="track"></span>
+        </label>
       </div>
-      <label class="switch">
-        <input id="enabled" type="checkbox" />
-        <span class="track"></span>
-      </label>
-    </div>
 
-    <div class="row">
-      <div>
-        <div class="label">Advance trigger</div>
-        <div class="hint">Moves to the next reel the moment the current one ends.</div>
+      <div class="setting" id="commentsRow">
+        <div>
+          <div class="title">Scroll with comments open</div>
+          <div class="desc" id="commentsDesc">Off: waits while the comment drawer is open.</div>
+        </div>
+        <label class="switch">
+          <input id="scrollWithComments" type="checkbox" />
+          <span class="track"></span>
+        </label>
       </div>
-    </div>
+    </main>
 
     <footer>
-      <a id="openReels" href="https://www.instagram.com/reels/" target="_blank" rel="noopener">
-        Open Instagram Reels ↗
-      </a>
+      <span class="hint">Page pill toggles it too</span>
+      <a href="https://www.instagram.com/reels/" target="_blank" rel="noopener">Open Reels ↗</a>
     </footer>
 
     <script src="popup.js"></script>

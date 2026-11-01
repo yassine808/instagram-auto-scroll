@@ -5,6 +5,7 @@
 - [x] Create local folder `D:\Projects\instagram-auto-scroll`
 - [x] Build MV3 extension: manifest, content script, popup settings
 - [x] v1.1.0: end-of-reel trigger (no fixed timer) + button anchored to the reel
+- [x] v1.2.0: popup redesign, pill outside the reel, comments gating toggle
 - [ ] Load unpacked in Brave/Chrome and run the manual test checklist
 - [ ] Fix scroll strategy if Instagram's DOM defeats `findScroller()`
 - [ ] Optional: icons, git init + push to origin
@@ -60,3 +61,18 @@
 - Next: confirm popup shows `v1.1.0` and the pill reads `Auto-scroll ON` pinned
   to the reel's top-right corner. If the reel still does not advance, the next
   suspect is `advance()` (synthetic ArrowDown / scroll container), not staleness.
+
+### 2026-11-01 — v1.2.0: frontend pass, pill outside the reel, comments toggle
+- Goal: nicer popup + page control, control outside the video, and a setting for
+  what happens while the comment drawer is open.
+- Done: popup rebuilt (gradient mark, two switch rows, dependent row dims when
+  the master is off). Page pill restyled (dot + label + state) with styles
+  injected through `adoptedStyleSheets` and re-attached if Instagram drops them.
+  Placement is now left-outside → right-outside → inside, clamped to viewport.
+  New setting `scrollWithComments` (default `false`): comments are detected by
+  the reel card narrowing below 72 % of its widest observed width, and the pill
+  shows amber `PAUSED` while it holds back.
+- Verified: `node --check` clean on both scripts, manifest parses at 1.2.0, no
+  `6s`/interval code left. Not yet exercised in a browser.
+- Next: reload extension + hard-refresh `/reels`; check pill position, PAUSED
+  state when opening comments, and that the second switch changes it.
