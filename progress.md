@@ -31,3 +31,16 @@
 - Verified: `node --check` clean on both scripts; no fixed-interval advancing
   remains (only the 400 ms `sync()` loop). Not yet tested in a browser.
 - Next: reload the extension in `brave://extensions`, walk the README checklist.
+
+### 2026-11-01 — pushed v1.1.0 to GitHub
+- Goal: get the repo on GitHub; diagnose "button still shows 6s".
+- Done: `git init -b main`, files added individually, commit `0d8da94`, remote
+  `origin` → `https://github.com/yassine808/instagram-auto-scroll.git`, pushed
+  `main`. Added a version badge to the popup header so a stale build is visible.
+- Verified: `git status -sb` shows `main...origin/main` in sync; `gh repo view`
+  reports `isEmpty: false`, default branch `main`. Only one copy of the extension
+  exists on disk (`D:\Projects\instagram-auto-scroll`).
+- Diagnosis: the "6s" button is the **old content script still running in an open
+  tab**. `content.js` v1.1.0 contains no interval code. Fix = reload the
+  extension in `brave://extensions`, then hard-refresh the Instagram tab.
+- Next: user confirms on-page label reads `Auto-scroll ON` (no seconds).
