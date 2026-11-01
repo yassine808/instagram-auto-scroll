@@ -6,6 +6,7 @@
 - [x] Build MV3 extension: manifest, content script, popup settings
 - [x] v1.1.0: end-of-reel trigger (no fixed timer) + button anchored to the reel
 - [x] v1.2.0: popup redesign, pill outside the reel, comments gating toggle
+- [x] v1.2.1: pill moved to the reel's bottom-right, outside it, fixed 168×34
 - [ ] Load unpacked in Brave/Chrome and run the manual test checklist
 - [ ] Fix scroll strategy if Instagram's DOM defeats `findScroller()`
 - [ ] Optional: icons, git init + push to origin
@@ -76,3 +77,17 @@
   `6s`/interval code left. Not yet exercised in a browser.
 - Next: reload extension + hard-refresh `/reels`; check pill position, PAUSED
   state when opening comments, and that the second switch changes it.
+
+### 2026-11-01 — v1.2.1: pill bottom-right of the reel, fixed size
+- Goal: put the control at the reel's bottom-right, outside the card, and stop it
+  from resizing with its label.
+- Done: `positionButton()` now anchors to `rect.right + 12` and
+  `rect.bottom - height - 12`, falling back inside the card's bottom-right when
+  the window has no room, then clamping to the viewport. Pill is a fixed
+  `168 × 34` (`box-sizing: border-box`, `justify-content: space-between`) with the
+  label ellipsised so `ON` / `PAUSED` / `OFF` never change its size. Popup version
+  string now comes from `chrome.runtime.getManifest()` instead of being hardcoded.
+- Verified: `node --check` clean, manifest parses at 1.2.1, fixed dimensions and
+  bottom anchoring present in `content.js`.
+- Next: reload extension + hard-refresh the tab; confirm the pill sits outside
+  the card's bottom-right and does not move when the state changes.

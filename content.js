@@ -149,8 +149,12 @@
       z-index: 2147483000;
       display: inline-flex;
       align-items: center;
+      justify-content: space-between;
       gap: 8px;
-      padding: 8px 12px;
+      box-sizing: border-box;
+      width: 168px;
+      height: 34px;
+      padding: 0 12px;
       border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: 999px;
       background: rgba(18, 18, 20, 0.82);
@@ -185,10 +189,19 @@
       background: #6b6b73;
       transition: background 0.18s ease, box-shadow 0.18s ease;
     }
+    #ig-auto-scroll-toggle .ig-as-label {
+      flex: 1 1 auto;
+      min-width: 0;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     #ig-auto-scroll-toggle .ig-as-state {
+      flex: 0 0 auto;
       font-size: 10px;
       font-weight: 700;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.6px;
       opacity: 0.72;
     }
     #ig-auto-scroll-toggle[data-state="on"] {
@@ -246,6 +259,7 @@
     dot.className = "ig-as-dot";
 
     const label = document.createElement("span");
+    label.className = "ig-as-label";
     label.textContent = "Auto-scroll";
 
     const state = document.createElement("span");
@@ -269,8 +283,8 @@
     return button;
   }
 
-  // Outside the reel: left edge if it fits, else right edge, else inside
-  // top-right. Never overlapping Instagram's own action column when avoidable.
+  // Bottom-right of the reel, outside it. Falls back to inside the card's
+  // bottom-right when the window leaves no room, then clamps to the viewport.
   function positionButton() {
     const el = ensureButton();
     const onPage = isReelsPage();
@@ -278,26 +292,23 @@
     if (!onPage) return;
 
     const pad = 10;
-    const gap = 14;
+    const gap = 12;
     const width = el.offsetWidth;
     const height = el.offsetHeight;
     const rect = boundVideo ? boundVideo.getBoundingClientRect() : null;
 
     let left = window.innerWidth - width - pad;
-    let top = pad;
+    let top = window.innerHeight - height - pad;
 
     if (rect && rect.width > 0) {
-      const leftSpace = rect.left - gap;
-      const rightSpace = window.innerWidth - rect.right - gap;
+      const outsideLeft = rect.right + gap;
 
-      if (leftSpace >= width + pad) {
-        left = rect.left - gap - width;
-      } else if (rightSpace >= width + pad) {
-        left = rect.right + gap;
+      if (outsideLeft + width <= window.innerWidth - pad) {
+        left = outsideLeft;
       } else {
         left = rect.right - width - pad;
       }
-      top = rect.top + 12;
+      top = rect.bottom - height - 12;
     }
 
     left = Math.min(Math.max(left, pad), window.innerWidth - width - pad);

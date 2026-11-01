@@ -4,6 +4,8 @@ const enabledInput = document.getElementById("enabled");
 const commentsInput = document.getElementById("scrollWithComments");
 const commentsRow = document.getElementById("commentsRow");
 
+document.getElementById("version").textContent = `v${chrome.runtime.getManifest().version}`;
+
 function paintDependents() {
   const on = enabledInput.checked;
   commentsRow.dataset.disabled = String(!on);
