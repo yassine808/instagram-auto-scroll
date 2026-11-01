@@ -44,3 +44,19 @@
   tab**. `content.js` v1.1.0 contains no interval code. Fix = reload the
   extension in `brave://extensions`, then hard-refresh the Instagram tab.
 - Next: user confirms on-page label reads `Auto-scroll ON` (no seconds).
+
+### 2026-11-01 — stale content script: proven and cleared
+- Goal: explain why the page still showed `Auto-scroll ON · 6s` after v1.1.0.
+- Done: inspected Brave's `Secure Preferences` — extension is `location: 4`
+  (unpacked) at `D:\Projects\instagram-auto-scroll`, only one copy on disk, Edge
+  has no copy. Brave process start 03:55:16 predates the fix; the open tab kept
+  executing v1.0.0 because reloading an unpacked extension does not re-inject
+  content scripts into existing tabs. Hard-killed Brave and relaunched it so the
+  extension service reloaded from disk and tabs got a fresh page context.
+- Verified: 0 → 14 brave processes after relaunch; extension entry still present
+  and pointing at the project folder. Session URL backup produced 0 entries
+  (Brave encrypts session files) — tab restore relies on Brave's prompt or
+  Ctrl+Shift+T.
+- Next: confirm popup shows `v1.1.0` and the pill reads `Auto-scroll ON` pinned
+  to the reel's top-right corner. If the reel still does not advance, the next
+  suspect is `advance()` (synthetic ArrowDown / scroll container), not staleness.
