@@ -6,19 +6,20 @@
     <style>
       :root {
         color-scheme: dark;
-        --bg: #0f0f11;
-        --card: #16161a;
-        --line: #24242a;
+        --bg: #0c0c0e;
+        --panel: #141418;
+        --line: #232329;
         --text: #f4f4f6;
-        --muted: #8b8b95;
+        --muted: #85858f;
         --accent: #34d399;
+        --amber: #fbbf24;
       }
       * {
         box-sizing: border-box;
       }
       body {
         margin: 0;
-        width: 292px;
+        width: 300px;
         background: var(--bg);
         color: var(--text);
         font: 13px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -28,22 +29,21 @@
         display: flex;
         align-items: center;
         gap: 11px;
-        padding: 15px 16px;
-        border-bottom: 1px solid var(--line);
+        padding: 16px;
       }
       .mark {
         display: grid;
         place-items: center;
-        width: 32px;
-        height: 32px;
-        border-radius: 9px;
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
         background: linear-gradient(140deg, #f9ce34 0%, #ee2a7b 48%, #6228d7 100%);
-        box-shadow: 0 4px 14px rgba(238, 42, 123, 0.28);
+        box-shadow: 0 6px 18px rgba(238, 42, 123, 0.3);
         flex: 0 0 auto;
       }
       .mark svg {
-        width: 16px;
-        height: 16px;
+        width: 17px;
+        height: 17px;
         display: block;
       }
       h1 {
@@ -57,26 +57,71 @@
         font-size: 11px;
         color: var(--muted);
       }
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 16px;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: var(--panel);
+        font-size: 11.5px;
+        color: var(--muted);
+      }
+      .status .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #4a4a52;
+        flex: 0 0 auto;
+      }
+      .status[data-state="on"] {
+        color: #b8f5d8;
+      }
+      .status[data-state="on"] .dot {
+        background: var(--accent);
+        box-shadow: 0 0 8px rgba(52, 211, 153, 0.7);
+      }
+      .status[data-state="idle"] {
+        color: #f3d9a0;
+      }
+      .status[data-state="idle"] .dot {
+        background: var(--amber);
+        box-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
+      }
       main {
-        padding: 6px 10px 10px;
+        padding: 14px 12px 12px;
+      }
+      .section {
+        padding: 0 4px 8px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #5f5f69;
+      }
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--panel);
+        overflow: hidden;
       }
       .setting {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 14px;
-        padding: 12px 8px;
-        border-radius: 10px;
-        transition: opacity 0.18s ease;
+        padding: 13px 14px;
+        transition: background 0.15s ease, opacity 0.15s ease;
+      }
+      .setting:hover {
+        background: #17171c;
       }
       .setting + .setting {
-        margin-top: 2px;
         border-top: 1px solid var(--line);
-        border-radius: 0;
-        padding-top: 14px;
       }
       .setting[data-disabled="true"] {
-        opacity: 0.45;
+        opacity: 0.42;
       }
       .title {
         font-size: 12.5px;
@@ -104,7 +149,7 @@
         position: absolute;
         inset: 0;
         border-radius: 999px;
-        background: #35353d;
+        background: #33333b;
         cursor: pointer;
         transition: background 0.18s ease;
       }
@@ -117,7 +162,7 @@
         height: 17px;
         border-radius: 50%;
         background: #fff;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
         transition: transform 0.18s ease;
       }
       .switch input:checked + .track {
@@ -133,22 +178,43 @@
       footer {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        padding: 11px 16px 13px;
+        gap: 8px;
+        padding: 10px 12px 13px;
         border-top: 1px solid var(--line);
       }
-      .hint {
-        font-size: 10.5px;
-        color: var(--muted);
+      button,
+      a.btn {
+        font: inherit;
+        font-size: 11.5px;
+        font-weight: 600;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        background: #17171c;
+        color: var(--text);
+        padding: 7px 10px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.15s ease, border-color 0.15s ease;
       }
-      a {
+      button:hover,
+      a.btn:hover {
+        background: #1f1f26;
+        border-color: #33333d;
+      }
+      button:active {
+        transform: translateY(1px);
+      }
+      .spacer {
+        flex: 1;
+      }
+      .link {
         color: #6fb2ff;
-        font-size: 11px;
+        font-size: 11.5px;
+        font-weight: 600;
         text-decoration: none;
         white-space: nowrap;
       }
-      a:hover {
+      .link:hover {
         text-decoration: underline;
       }
     </style>
@@ -163,37 +229,48 @@
       </div>
       <div>
         <h1>Instagram Auto-Scroll</h1>
-        <p class="sub">Advances when a reel ends · <span id="version">v1.2.1</span></p>
+        <p class="sub">Reels only · <span id="version">v1.3.0</span></p>
       </div>
     </header>
 
-    <main>
-      <div class="setting">
-        <div>
-          <div class="title">Auto-scroll on Reels</div>
-          <div class="desc">Master switch, same value as the page button.</div>
-        </div>
-        <label class="switch">
-          <input id="enabled" type="checkbox" />
-          <span class="track"></span>
-        </label>
-      </div>
+    <div class="status" id="status" data-state="off">
+      <span class="dot"></span>
+      <span id="statusText">Checking this tab…</span>
+    </div>
 
-      <div class="setting" id="commentsRow">
-        <div>
-          <div class="title">Scroll with comments open</div>
-          <div class="desc" id="commentsDesc">Off: waits while the comment drawer is open.</div>
+    <main>
+      <div class="section">Behaviour</div>
+      <div class="card">
+        <div class="setting">
+          <div>
+            <div class="title">Auto-scroll on Reels</div>
+            <div class="desc">Master switch, same value as the page pill.</div>
+          </div>
+          <label class="switch">
+            <input id="enabled" type="checkbox" />
+            <span class="track"></span>
+          </label>
         </div>
-        <label class="switch">
-          <input id="scrollWithComments" type="checkbox" />
-          <span class="track"></span>
-        </label>
+
+        <div class="setting" id="commentsRow">
+          <div>
+            <div class="title">Scroll with comments open</div>
+            <div class="desc">Off: waits while the comment drawer is open.</div>
+          </div>
+          <label class="switch">
+            <input id="scrollWithComments" type="checkbox" />
+            <span class="track"></span>
+          </label>
+        </div>
       </div>
     </main>
 
     <footer>
-      <span class="hint">Page pill toggles it too</span>
-      <a href="https://www.instagram.com/reels/" target="_blank" rel="noopener">Open Reels ↗</a>
+      <button id="reloadTab" type="button" hidden>Reload tab</button>
+      <span class="spacer"></span>
+      <a class="link" id="openReels" href="https://www.instagram.com/reels/" target="_blank" rel="noopener">
+        Open Reels ↗
+      </a>
     </footer>
 
     <script src="popup.js"></script>

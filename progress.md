@@ -8,6 +8,7 @@
 - [x] v1.2.0: popup redesign, pill outside the reel, comments gating toggle
 - [x] v1.2.1: pill moved to the reel's bottom-right, outside it, fixed 168×34
 - [x] v1.2.2: pill moved to the reel's top-right — bottom-right covered the audio avatar
+- [x] v1.3.0: Reels-only injection via service worker + rebuilt popup (status, reload)
 - [ ] Load unpacked in Brave/Chrome and run the manual test checklist
 - [ ] Fix scroll strategy if Instagram's DOM defeats `findScroller()`
 - [ ] Optional: icons, git init + push to origin
@@ -103,3 +104,17 @@
   new anchor and to the reason the bottom edge is off-limits.
 - Next: reload extension + hard-refresh; confirm nothing sits under the pill at
   the reel's top-right in both normal and comments-open layouts.
+
+### 2026-11-01 — v1.3.0: Reels-only injection, rebuilt popup
+- Goal: stop the extension running anywhere but `/reels`; better extension UI.
+- Done: removed `content_scripts` from the manifest entirely. New `background.js`
+  injects `content.js` with `chrome.scripting` only when the tab URL matches
+  `/reels`, re-injecting on `tabs.onUpdated` for SPA navigations, plus once on
+  install for already-open tabs. Permissions are now `storage` + `scripting`.
+  Badge shows `ON`/`OFF` on Reels tabs and nothing elsewhere. Popup rebuilt:
+  live per-tab status strip, card-based settings, dependent row dimming, and a
+  **Reload tab** button that finally makes the stale-script trap self-serve.
+- Verified: `node --check` clean on all three scripts; manifest parses at 1.3.0
+  with no `content_scripts` key; permissions are exactly `storage,scripting`.
+- Next: reload extension, open `/reels`; confirm badge `ON`, pill visible, and
+  that the home feed shows no pill/badge.
